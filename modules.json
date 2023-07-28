@@ -2,18 +2,41 @@
     "name": "QUANTS",
     "homePage": "https://gitlab.internal.sanger.ac.uk/team113_nextflow_pipelines/QUANTS",
     "repos": {
-        "nf-core/modules": {
-            "cutadapt": {
-                "git_sha": "e937c7950af70930d1f34bb961403d9d2aa81c7d"
+        "https://github.com/nf-core/modules.git": {
+            "modules": {
+                "nf-core": {
+                    "cutadapt": {
+                        "branch": "master",
+                        "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
+                    "fastqc": {
+                        "branch": "master",
+                        "git_sha": "49b18b1639f4f7104187058866a8fab33332bdfe",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
+                    "multiqc": {
+                        "branch": "master",
+                        "git_sha": "90aef30f432332bdf0ce9f4b9004aa5d5c4960bb",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    },
+                    "pear": {
+                        "branch": "master",
+                        "git_sha": "911696ea0b62df80e900ef244d7867d177971f73",
+                        "installed_by": [
+                            "modules"
+                        ]
+                    }
+                }
             },
-            "fastqc": {
-                "git_sha": "e937c7950af70930d1f34bb961403d9d2aa81c7d"
-            },
-            "multiqc": {
-                "git_sha": "e937c7950af70930d1f34bb961403d9d2aa81c7d"
-            },
-            "samtools/bam2fq": {
-                "git_sha": "1ad73f1b2abdea9398680d6d20014838135c9a35"
+            "subworkflows": {
+                "nf-core": {}
             }
         }
     }
