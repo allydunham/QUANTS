@@ -41,7 +41,7 @@ if (params.read_trimming_qc && !params.read_trimming) {
 }
 
 // Check read merging software (if set)
-def read_merging_software = ['seqprep', 'flash2']
+def read_merging_software = ['seqprep', 'flash2', 'pear']
 if (params.read_merging) {
     if ( read_merging_software.contains( params.read_merging ) == false ) {
 	    printErr("If read_merging is set, software must be one of: " + read_merging_software.join(',') + ".")
@@ -141,7 +141,7 @@ include { SEQUENCING_QC as RAW_SEQUENCING_QC;
 //
 // MODULE: Installed directly from nf-core/modules
 //
-include { MULTIQC } from '../modules/nf-core/modules/multiqc/main' addParams( options: multiqc_options   )
+include { MULTIQC } from '../modules/nf-core/multiqc/main' addParams( options: multiqc_options   )
 
 /*
 ========================================================================================
@@ -185,6 +185,22 @@ workflow SGE {
     }
 
     //
+    // SUBWORKFLOW: Run read merging (PE only, optionally before or after trimming)
+    //
+    if (params.read_merging && params.merge_first) {
+        READ_MERGING ( ch_read_trim )
+        ch_read_trim = READ_MERGING.out.reads.map{it -> [[id: it[0].id + '_merged', single_end: true], it[1]]}
+
+        //
+        // SUBWORKFLOW: Run FASTQC on merged reads
+        //
+        if (params.read_merging_qc) {
+            ch_merged_read_qc = ch_read_trim
+            MERGED_SEQUENCING_QC ( ch_merged_read_qc )
+        }
+    }
+
+    //
     // SUBWORKFLOW: Run adapter/quality trimming
     //
     if (params.read_trimming) {
@@ -202,9 +218,9 @@ workflow SGE {
     }
 
     //
-    // SUBWORKFLOW: Run read merging (PE only)
+    // SUBWORKFLOW: Run read merging (PE only, optionally after trimming)
     //
-    if (params.read_merging) {
+    if (params.read_merging && !params.merge_first) {
         READ_MERGING ( ch_read_merge )
         ch_read_transform = READ_MERGING.out.reads.map{it -> [[id: it[0].id + '_merged', single_end: true], it[1]]}
 
