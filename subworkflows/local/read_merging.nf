@@ -24,6 +24,16 @@ if (params.seqprep_options) {
 } 
 include { SEQPREP } from '../../modules/local/seqprep/read_merging/main.nf' addParams( options: seqprep_options )
 
+//
+// MODULE: Load PEAR 
+//
+def pear_options  = modules['pear']
+if (params.pear_options) {
+    pear_options.args += " " + params.pear_options
+} 
+include { PEAR } from '../../modules/nf-core/pear/main.nf' addParams( options: pear_options )
+
+
 workflow READ_MERGING {
     take: 
         reads
@@ -45,7 +55,15 @@ workflow READ_MERGING {
             SEQPREP ( reads )
             ch_merged_reads = SEQPREP.out.reads
         }
-        
+
+        if (params.read_merging == "pear") {
+            //
+            // MODULE: Run PEAR
+            //
+            PEAR ( reads )
+            ch_merged_reads = PEAR.out.assembled
+        }
+
     emit:
         reads = ch_merged_reads
 }

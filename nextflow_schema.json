@@ -122,6 +122,16 @@
                     "type": "string",
                     "description": "Define options for FLASH2 (only suitable for pair-end data with FLASH2 enabled).",
                     "help_text": "Include valid FLASH2 command line options where default options are not suitable."
+                },
+                "pear_options": {
+                    "type": "string",
+                    "description": "Define options for PEAR (only suitable for pair-end data with PEAR enabled).",
+                    "help_text": "Include valid PEAR command line options where default options are not suitable."
+                },
+                "merge_first": {
+                    "type": "boolean",
+                    "description": "Merge reads before trimming (only suitable for pair-end data) [default: false]",
+                    "help_text": "Set to true to merge pair-end data before trimming reads"
                 }
             }
         },
