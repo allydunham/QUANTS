@@ -12,7 +12,7 @@ def cutadapt_options  = modules['cutadapt']
 if (params.cutadapt_options) {
     cutadapt_options.args += " " + params.cutadapt_options
 } 
-include { CUTADAPT  } from '../../modules/nf-core/modules/cutadapt/main' addParams( options: cutadapt_options )
+include { CUTADAPT  } from '../../modules/nf-core/cutadapt/main' addParams( options: cutadapt_options )
 
 workflow READ_TRIMMING {
     take: 
